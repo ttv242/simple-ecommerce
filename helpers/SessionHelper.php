@@ -1,5 +1,15 @@
 <?php
 
+// Viết thêm một số hàm get, updated, forgot session
+
+function getSessionValue($key)
+{
+    if (isset($_SESSION[$key])) {
+        return $_SESSION[$key];
+    }
+    return null;
+}
+
 // Hàm để kiểm tra xem người dùng đã đăng nhập hay chưa
 function isLoggedIn()
 {
@@ -12,8 +22,21 @@ function isLoggedIn()
 function login($username, $password)
 {
     // Thực hiện logic để kiểm tra đăng nhập và lưu thông tin người dùng vào session
+    $tableName = 'tbl_user';
+    $columnName = 'user';
+    $user = getRowByColumnName($tableName, $columnName , $username);
+    
+    // var_dump($user);
 
-    return true; // Trả về true nếu đăng nhập thành công, ngược lại trả về false
+    if ($user && $user[0]['pass'] === $password) {
+        // Đăng nhập thành công
+        $_SESSION[$columnName] = $user;
+        // var_dump($_SESSION['user'][0]['role']);
+        return true;
+    } else {
+        // Đăng nhập thất bại
+        return false;
+    }
 }
 
 // Hàm để xử lý yêu cầu đăng xuất

@@ -2,11 +2,31 @@
 
 session_start();
 
+
+define('_DIR_ROOT', __DIR__);
+
+//Xử lý http root
+if (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'){
+    $web_root = 'https://'.$_SERVER['HTTP_HOST'];
+}else{
+    $web_root = 'http://'.$_SERVER['HTTP_HOST'];
+}
+
+$dirRoot = str_replace('\\', '/', _DIR_ROOT);
+
+$documentRoot = str_replace('\\', '/', $_SERVER['DOCUMENT_ROOT']);
+
+$folder = str_replace(strtolower($documentRoot), '', strtolower($dirRoot));
+
+$web_root = $web_root.$folder;
+
+define('_WEB_ROOT', $web_root);
+
+
 require_once './app/controllers/Controller.php';
     // require_once './app/controllers/auth.php';
     // require_once './app/controllers/dashboard.php';
 
-CONST views = './app/views/';
 
 // Xác định trang hiện tại
 $page = isset($_GET['page']) ? $_GET['page'] : 'home';
@@ -25,12 +45,19 @@ switch ($page) {
     case 'about':
         about();
         break;
+
+    case 'contact':
+        contact();
+        break;
+
     case 'login':
         auth_login();
         break;
+
     case 'register':
         auth_register();
         break;
+        
     case 'dashboard':
         // Kiểm tra xem người dùng đã đăng nhập và có quyền truy cập hay không
         if ($isLoggedIn && $isAuthorized) {

@@ -1,6 +1,7 @@
 <?php
 
 require_once './helpers/ArrayHelper.php';
+require_once './helpers/AuthenticationHelper.php';
 require_once './helpers/ErrorHelper.php';
 require_once './helpers/FunctionHelper.php';
 require_once './helpers/ImageHelper.php';
